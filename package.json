@@ -1,0 +1,23 @@
+{
+  "name": "@tkeron/tools",
+  "version": "0.1.1",
+  "description": "Useful JavaScript utilities",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "type": "module",
+  "author": "tkeron",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "utilities",
+    "utils"
+  ],
+  "repository": {
+    "url": "git@github.com:tkeron/tools.git"
+  }
+}
