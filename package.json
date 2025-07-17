@@ -1,12 +1,15 @@
 {
   "name": "@tkeron/tools",
-  "version": "0.1.1",
-  "description": "Useful JavaScript utilities",
+  "version": "0.2.0",
+  "description": "Useful JavaScript utilities for Bun runtime",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "type": "module",
   "author": "tkeron",
   "license": "MIT",
+  "engines": {
+    "bun": ">=1.0.0"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -14,8 +17,10 @@
     "typescript": "^5.7.3"
   },
   "keywords": [
+    "bun",
     "utilities",
-    "utils"
+    "utils",
+    "tools"
   ],
   "repository": {
     "url": "git@github.com:tkeron/tools.git"
