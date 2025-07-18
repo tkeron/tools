@@ -46,6 +46,10 @@ describe("getPaths Tests", () => {
         writeFileSync(join(testDir, "node_modules", "package.json"), "content");
         mkdirSync(join(testDir, "build"), { recursive: true });
         writeFileSync(join(testDir, "build", "output.js"), "content");
+
+        for (let i = 123; i <= 129; i++) {
+            mkdirSync(join(testDir, `build`, `qwerty_${i}.com`), { recursive: true });
+        }
     });
 
     afterAll(() => {
@@ -245,25 +249,24 @@ describe("getPaths Tests", () => {
             expect(files.some(path => path === ".env")).toBe(true);
             expect(files.some(path => path === "src/index.ts")).toBe(true);
             expect(files.some(path => path === "src/components/Button.tsx")).toBe(true);
-            
+
             const nestedFiles = files.filter(path => path.includes("/"));
             expect(nestedFiles.length).toBeGreaterThan(0);
 
             expect(dirs.some(path => path === "src")).toBe(true);
             expect(dirs.some(path => path === ".git")).toBe(true);
-            
+
             expect(dirs.length).toBeGreaterThan(0);
         });
 
         test("absolute parameter should work consistently across all function variants", () => {
             const pattern = "src/**";
 
-            // Test with absolute = true
+
             const absoluteFiles = getFilePaths(testDir, pattern, true);
             const absoluteDirs = getDirectoryPaths(testDir, pattern, true);
             const absoluteAll = getPaths(testDir, pattern, "yes", true);
 
-            // Test with absolute = false
             const relativeFiles = getFilePaths(testDir, pattern, false);
             const relativeDirs = getDirectoryPaths(testDir, pattern, false);
             const relativeAll = getPaths(testDir, pattern, "yes", false);
@@ -440,7 +443,6 @@ describe("getPaths Tests", () => {
             expect(files.some(path => path.includes("UPPERCASE.TXT"))).toBe(true);
             expect(files.some(path => path.includes("file1.txt"))).toBe(true);
 
-            // Should be case sensitive
             const upper = getFilePaths(testDir, "*UPPER*");
             const lower = getFilePaths(testDir, "*upper*");
             expect(upper.length).toBeGreaterThan(0);
@@ -483,7 +485,26 @@ describe("getPaths Tests", () => {
                 expect(dir).toMatch(/^[\/\\]|^[a-zA-Z]:[\/\\]/);
             });
         });
+
+
+
+        test("should return the same number of paths with absolute false or true", () => {
+
+            const absolutes = getDirectoryPaths(testDir, "build/qwerty_*", true);
+            const notAbsolutes = getDirectoryPaths(testDir, "build/qwerty_*", false);
+
+
+            console.log(JSON.stringify({ absolutes, notAbsolutes }, null, 2));
+
+            expect(absolutes).toHaveLength(7);
+            expect(notAbsolutes).toHaveLength(7);
+
+
+        });
+
     });
+
+
 
 
 })

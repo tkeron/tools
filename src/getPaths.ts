@@ -1,5 +1,6 @@
 import { Glob } from "bun";
 import { statSync } from "fs";
+import { join } from "path";
 
 /**
  * Gets file paths, directory paths, or both based on the specified parameters
@@ -94,7 +95,8 @@ export const getDirectoryPaths = (path: string, pattern: string = "**/*", absolu
 
         const directories = allItems.filter(item => {
             try {
-                return statSync(item).isDirectory();
+                const fullPath = absolute ? item : join(path, item);
+                return statSync(fullPath).isDirectory();
             } catch {
                 return false;
             }
