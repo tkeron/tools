@@ -7,6 +7,9 @@
   "type": "module",
   "author": "tkeron",
   "license": "MIT",
+  "scripts": {
+    "test": "bun test --concurrent"
+  },
   "engines": {
     "bun": ">=1.0.0"
   },

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "bun:test";
-import { rng } from "./random";
+import { rng } from "../src/random.js";
 
 describe("testing rng", () => {
   it("should return the same 10 random numbers for seed=344", () => {

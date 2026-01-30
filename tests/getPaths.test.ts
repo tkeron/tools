@@ -1,7 +1,7 @@
-import { describe, test, expect, beforeAll, afterAll, it } from "bun:test";
+import { describe, expect, beforeAll, afterAll, it } from "bun:test";
 import { mkdirSync, writeFileSync, rmSync } from "fs";
 import { join } from "path";
-import { getPaths, getFilePaths, getDirectoryPaths } from "./getPaths";
+import { getPaths, getFilePaths, getDirectoryPaths } from "../src/getPaths.js";
 
 const testDir = join(process.cwd(), "test-temp");
 
@@ -57,7 +57,7 @@ describe("getPaths Tests", () => {
     });
 
     describe("getPaths", () => {
-        test("should return both files and directories when includeDirectories is 'yes'", () => {
+        it("should return both files and directories when includeDirectories is 'yes'", () => {
             const result = getPaths(testDir, "**/*", "yes");
 
             expect(result.length).toBeGreaterThan(0);
@@ -66,7 +66,7 @@ describe("getPaths Tests", () => {
             expect(result.some(path => path.includes("docs"))).toBe(true);
         });
 
-        test("should return only files when includeDirectories is 'no'", () => {
+        it("should return only files when includeDirectories is 'no'", () => {
             const result = getPaths(testDir, "**/*", "no");
 
             expect(result.length).toBeGreaterThan(0);
@@ -76,7 +76,7 @@ describe("getPaths Tests", () => {
             expect(result.some(path => path.endsWith("docs"))).toBe(false);
         });
 
-        test("should return only directories when includeDirectories is 'onlyDirectories'", () => {
+        it("should return only directories when includeDirectories is 'onlyDirectories'", () => {
             const result = getPaths(testDir, "**/*", "onlyDirectories");
 
             expect(result.length).toBeGreaterThan(0);
@@ -87,14 +87,14 @@ describe("getPaths Tests", () => {
             expect(result.some(path => path.includes("index.ts"))).toBe(false);
         });
 
-        test("should use default includeDirectories value ('no')", () => {
+        it("should use default includeDirectories value ('no')", () => {
             const result = getPaths(testDir, "**/*");
             const filesOnlyResult = getPaths(testDir, "**/*", "no");
 
             expect(result).toEqual(filesOnlyResult);
         });
 
-        test("should work with specific patterns", () => {
+        it("should work with specific patterns", () => {
             const result = getPaths(testDir, "*.txt", "no");
 
             expect(result.some(path => path.includes("file1.txt"))).toBe(true);
@@ -102,14 +102,14 @@ describe("getPaths Tests", () => {
             expect(result.some(path => path.includes("README.md"))).toBe(false);
         });
 
-        test("should include hidden files and directories", () => {
+        it("should include hidden files and directories", () => {
             const allResult = getPaths(testDir, "**/*", "yes");
 
             expect(allResult.some(path => path.includes(".env"))).toBe(true);
             expect(allResult.some(path => path.includes(".git"))).toBe(true);
         });
 
-        test("should return empty array for non-existent path", () => {
+        it("should return empty array for non-existent path", () => {
             const result = getPaths("/non/existent/path", "**/*", "yes");
 
             expect(result).toEqual([]);
@@ -117,7 +117,7 @@ describe("getPaths Tests", () => {
     });
 
     describe("getFilePaths", () => {
-        test("should return only files", () => {
+        it("should return only files", () => {
             const result = getFilePaths(testDir, "**/*");
 
             expect(result.length).toBeGreaterThan(0);
@@ -128,7 +128,7 @@ describe("getPaths Tests", () => {
             expect(result.some(path => path.endsWith("docs"))).toBe(false);
         });
 
-        test("should work with specific file patterns", () => {
+        it("should work with specific file patterns", () => {
             const jsFiles = getFilePaths(testDir, "**/*.js");
             const tsFiles = getFilePaths(testDir, "**/*.ts");
 
@@ -139,14 +139,14 @@ describe("getPaths Tests", () => {
             expect(tsFiles.some(path => path.includes("utils.ts"))).toBe(true);
         });
 
-        test("should include hidden files", () => {
+        it("should include hidden files", () => {
             const result = getFilePaths(testDir, "**/*");
 
             expect(result.some(path => path.includes(".env"))).toBe(true);
             expect(result.some(path => path.includes(".git/config"))).toBe(true);
         });
 
-        test("should return empty array for non-existent path", () => {
+        it("should return empty array for non-existent path", () => {
             const result = getFilePaths("/non/existent/path", "**/*");
 
             expect(result).toEqual([]);
@@ -154,7 +154,7 @@ describe("getPaths Tests", () => {
     });
 
     describe("getDirectoryPaths", () => {
-        test("should return only directories", () => {
+        it("should return only directories", () => {
             const result = getDirectoryPaths(testDir, "**/*");
 
             expect(result.length).toBeGreaterThan(0);
@@ -166,20 +166,20 @@ describe("getPaths Tests", () => {
             expect(result.some(path => path.includes("index.ts"))).toBe(false);
         });
 
-        test("should include hidden directories", () => {
+        it("should include hidden directories", () => {
             const result = getDirectoryPaths(testDir, "**/*");
 
             expect(result.some(path => path.includes(".git"))).toBe(true);
         });
 
-        test("should work with directory patterns", () => {
+        it("should work with directory patterns", () => {
             const result = getDirectoryPaths(testDir, "src/**");
 
             expect(result.some(path => path.endsWith("components"))).toBe(true);
             expect(result.some(path => path.endsWith("docs"))).toBe(false);
         });
 
-        test("should return empty array for non-existent path", () => {
+        it("should return empty array for non-existent path", () => {
             const result = getDirectoryPaths("/non/existent/path", "**/*");
 
             expect(result).toEqual([]);
@@ -187,7 +187,7 @@ describe("getPaths Tests", () => {
     });
 
     describe("Edge cases", () => {
-        test("should handle empty directory", () => {
+        it("should handle empty directory", () => {
             const emptyDirPath = join(testDir, "empty-dir");
             const files = getFilePaths(emptyDirPath, "**/*");
             const dirs = getDirectoryPaths(emptyDirPath, "**/*");
@@ -196,13 +196,13 @@ describe("getPaths Tests", () => {
             expect(dirs).toEqual([]);
         });
 
-        test("should handle invalid glob patterns gracefully", () => {
+        it("should handle invalid glob patterns gracefully", () => {
             const result = getPaths(testDir, "[invalid", "yes");
 
             expect(Array.isArray(result)).toBe(true);
         });
 
-        test("all functions should return absolute paths by default", () => {
+        it("all functions should return absolute paths by default", () => {
             const files = getFilePaths(testDir, "**/*");
             const dirs = getDirectoryPaths(testDir, "**/*");
             const all = getPaths(testDir, "**/*", "yes");
@@ -220,7 +220,7 @@ describe("getPaths Tests", () => {
             });
         });
 
-        test("all functions should return relative paths when absolute is false", () => {
+        it("all functions should return relative paths when absolute is false", () => {
             const files = getFilePaths(testDir, "**/*", false);
             const dirs = getDirectoryPaths(testDir, "**/*", false);
             const all = getPaths(testDir, "**/*", "yes", false);
@@ -241,7 +241,7 @@ describe("getPaths Tests", () => {
             });
         });
 
-        test("relative paths should contain expected file and directory names", () => {
+        it("relative paths should contain expected file and directory names", () => {
             const files = getFilePaths(testDir, "**/*", false);
             const dirs = getDirectoryPaths(testDir, "**/*", false);
 
@@ -259,7 +259,7 @@ describe("getPaths Tests", () => {
             expect(dirs.length).toBeGreaterThan(0);
         });
 
-        test("absolute parameter should work consistently across all function variants", () => {
+        it("absolute parameter should work consistently across all function variants", () => {
             const pattern = "src/**";
 
 
@@ -288,7 +288,7 @@ describe("getPaths Tests", () => {
     });
 
     describe("Advanced Glob Patterns", () => {
-        test("should work with multiple extension patterns", () => {
+        it("should work with multiple extension patterns", () => {
             const result = getFilePaths(testDir, "*.{js,ts,json}");
 
             expect(result.some(path => path.includes("file2.js"))).toBe(true);
@@ -298,13 +298,13 @@ describe("getPaths Tests", () => {
             expect(result.some(path => path.includes("styles.css"))).toBe(false);
         });
 
-        test("should work with exclusion patterns", () => {
+        it("should work with exclusion patterns", () => {
             const allFiles = getFilePaths(testDir, "**/*");
             expect(allFiles.some(path => path.includes("node_modules"))).toBe(true);
             expect(allFiles.some(path => path.includes("build"))).toBe(true);
         });
 
-        test("should work with specific directory depth patterns", () => {
+        it("should work with specific directory depth patterns", () => {
             const topLevel = getFilePaths(testDir, "*");
             expect(topLevel.some(path => path.includes("file1.txt"))).toBe(true);
             expect(topLevel.some(path => path.includes("index.ts"))).toBe(false);
@@ -314,14 +314,14 @@ describe("getPaths Tests", () => {
             expect(srcFiles.some(path => path.includes("Button.tsx"))).toBe(false);
         });
 
-        test("should work with character class patterns", () => {
+        it("should work with character class patterns", () => {
             const result = getFilePaths(testDir, "*[Ee]*");
 
             expect(result.some(path => path.includes("README.md"))).toBe(true);
             expect(result.some(path => path.includes(".env"))).toBe(true);
         });
 
-        test("should work with case sensitive patterns", () => {
+        it("should work with case sensitive patterns", () => {
             const upperFiles = getFilePaths(testDir, "*.TXT");
             const lowerFiles = getFilePaths(testDir, "*.txt");
 
@@ -331,7 +331,7 @@ describe("getPaths Tests", () => {
             expect(upperFiles).not.toEqual(lowerFiles);
         });
 
-        test("should handle patterns that match nothing", () => {
+        it("should handle patterns that match nothing", () => {
             const result = getFilePaths(testDir, "*.nonexistent");
             expect(result).toEqual([]);
 
@@ -339,7 +339,7 @@ describe("getPaths Tests", () => {
             expect(dirs).toEqual([]);
         });
 
-        test("should work with deep nested patterns", () => {
+        it("should work with deep nested patterns", () => {
             const deepFiles = getFilePaths(testDir, "**/very/**/*.txt");
             expect(deepFiles.some(path => path.includes("deep-file.txt"))).toBe(true);
 
@@ -350,7 +350,7 @@ describe("getPaths Tests", () => {
     });
 
     describe("Function Consistency", () => {
-        test("getPaths('yes') should equal getFilePaths() + getDirectoryPaths()", () => {
+        it("getPaths('yes') should equal getFilePaths() + getDirectoryPaths()", () => {
             const pattern = "**/*";
 
             const allPaths = getPaths(testDir, pattern, "yes");
@@ -363,7 +363,7 @@ describe("getPaths Tests", () => {
             expect(allSorted).toEqual(combined);
         });
 
-        test("should not have duplicates in any function", () => {
+        it("should not have duplicates in any function", () => {
             const files = getFilePaths(testDir, "**/*");
             const dirs = getDirectoryPaths(testDir, "**/*");
             const all = getPaths(testDir, "**/*", "yes");
@@ -373,7 +373,7 @@ describe("getPaths Tests", () => {
             expect(all.length).toBe(new Set(all).size);
         });
 
-        test("files and directories should be mutually exclusive", () => {
+        it("files and directories should be mutually exclusive", () => {
             const files = getFilePaths(testDir, "**/*");
             const dirs = getDirectoryPaths(testDir, "**/*");
 
@@ -381,7 +381,7 @@ describe("getPaths Tests", () => {
             expect(intersection).toEqual([]);
         });
 
-        test("different patterns should be consistent across functions", () => {
+        it("different patterns should be consistent across functions", () => {
             const patterns = ["*.js", "src/**", "**/*.md", "**/components/*"];
 
             patterns.forEach(pattern => {
@@ -399,7 +399,7 @@ describe("getPaths Tests", () => {
             });
         });
 
-        test("should maintain consistent behavior with default parameters", () => {
+        it("should maintain consistent behavior with default parameters", () => {
             const result1 = getPaths(testDir);
             const result2 = getPaths(testDir, "**/*");
             const result3 = getPaths(testDir, "**/*", "no");
@@ -414,7 +414,7 @@ describe("getPaths Tests", () => {
     });
 
     describe("Special File Names", () => {
-        test("should handle files with spaces", () => {
+        it("should handle files with spaces", () => {
             const files = getFilePaths(testDir, "**/*");
             expect(files.some(path => path.includes("file with spaces.txt"))).toBe(true);
 
@@ -422,7 +422,7 @@ describe("getPaths Tests", () => {
             expect(specific.some(path => path.includes("file with spaces.txt"))).toBe(true);
         });
 
-        test("should handle files without extensions", () => {
+        it("should handle files without extensions", () => {
             const files = getFilePaths(testDir, "**/*");
             expect(files.some(path => path.includes("file-no-extension"))).toBe(true);
 
@@ -430,7 +430,7 @@ describe("getPaths Tests", () => {
             expect(withExt.some(path => path.includes("file-no-extension"))).toBe(false);
         });
 
-        test("should handle files with unicode characters", () => {
+        it("should handle files with unicode characters", () => {
             const files = getFilePaths(testDir, "**/*");
             expect(files.some(path => path.includes("números-ñ-ü.js"))).toBe(true);
 
@@ -438,7 +438,7 @@ describe("getPaths Tests", () => {
             expect(jsFiles.some(path => path.includes("números-ñ-ü.js"))).toBe(true);
         });
 
-        test("should handle uppercase/lowercase variations", () => {
+        it("should handle uppercase/lowercase variations", () => {
             const files = getFilePaths(testDir, "**/*");
             expect(files.some(path => path.includes("UPPERCASE.TXT"))).toBe(true);
             expect(files.some(path => path.includes("file1.txt"))).toBe(true);
@@ -449,7 +449,7 @@ describe("getPaths Tests", () => {
             expect(lower).toEqual([]);
         });
 
-        test("should handle various file extensions", () => {
+        it("should handle various file extensions", () => {
             const extensions = ["js", "ts", "tsx", "json", "css", "jsx", "md", "txt"];
 
             extensions.forEach(ext => {
@@ -461,7 +461,7 @@ describe("getPaths Tests", () => {
             expect(getFilePaths(testDir, "*.jsx").some(path => path.includes("script.jsx"))).toBe(true);
         });
 
-        test("should handle deeply nested paths correctly", () => {
+        it("should handle deeply nested paths correctly", () => {
             const deepFiles = getFilePaths(testDir, "**/structure/*");
             expect(deepFiles.some(path => path.includes("deep-file.txt"))).toBe(true);
 
@@ -472,7 +472,7 @@ describe("getPaths Tests", () => {
             expect(allDeep.length).toBeGreaterThanOrEqual(4);
         });
 
-        test("should normalize paths consistently", () => {
+        it("should normalize paths consistently", () => {
             const files = getFilePaths(testDir, "**/*");
             const dirs = getDirectoryPaths(testDir, "**/*");
 
@@ -488,7 +488,7 @@ describe("getPaths Tests", () => {
 
 
 
-        test("should return the same number of paths with absolute false or true", () => {
+        it("should return the same number of paths with absolute false or true", () => {
 
             const absolutes = getDirectoryPaths(testDir, "build/qwerty_*", true);
             const notAbsolutes = getDirectoryPaths(testDir, "build/qwerty_*", false);

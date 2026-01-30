@@ -6,11 +6,6 @@ export interface Stack<T> {
     current: T | null;
 }
 
-/**
- * Returns a LIFO (Last In First Out) stack.
- * Same as FILO (First In Last Out) stack.
- * @returns an empty LIFO stack.
- */
 export const getLIFO = <T>(): Stack<T> => {
 
     const _stack: T[] = [];
@@ -40,10 +35,6 @@ export const getLIFO = <T>(): Stack<T> => {
 
 };
 
-/**
- * Returns a FIFO (First In First Out) stack
- * @returns an empty FIFO stack
- */
 export const getFIFO = <T>(): Stack<T> => {
 
     const _stack: T[] = [];

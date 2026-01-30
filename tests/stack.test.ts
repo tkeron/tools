@@ -1,6 +1,6 @@
 import { describe, it, expect } from "bun:test";
-import { getFIFO } from "./stack";
-import { getLIFO } from "./stack";
+import { getFIFO } from "../src/stack.js";
+import { getLIFO } from "../src/stack.js";
 
 describe("LIFO stack tests", () => {
   it("should create an empty lifo stack", () => {
