@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0] - 2026-02-15
+
+### Added
+
+- **Logger system**: Generic logging abstraction for standardized logging across the ecosystem
+  - `Logger` interface: Standard interface with `log`, `error`, `warn`, `info` methods
+  - `logger`: Default implementation using console methods
+  - `silentLogger`: No-op logger for silent operation (useful in production or tests)
+  - `createTestLogger()`: Captures logs in arrays for testing and verification
+  - Full TypeScript support with exported types
+  - Comprehensive test coverage (45 tests across 3 test files)
+
+### Documentation
+
+- Logger system fully tested with edge cases (null, undefined, Error objects, mixed types)
+- Test logger supports independent instances and manual array manipulation
+
 ## [0.3.0] - 2026-02-15
 
 ### Added
