@@ -21,10 +21,10 @@ This package provides a growing collection of utility functions and data structu
 
 ```typescript
 // Import all utilities
-import * as tools from '@tkeron/tools';
+import * as tools from "@tkeron/tools";
 
 // Or import specific utilities
-import { rng, getLIFO, getPaths } from '@tkeron/tools';
+import { rng, getLIFO, getPaths } from "@tkeron/tools";
 ```
 
 ## 📚 Documentation
@@ -38,8 +38,5 @@ The project includes comprehensive tests for all utilities:
 ```bash
 bun test
 ```
-
-
-
 
 Built with ❤️ for the Bun ecosystem
