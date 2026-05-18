@@ -4,3 +4,8 @@ export * from "./getPaths";
 export * from "./loggerObj";
 export * from "./silentLogger";
 export * from "./createTestLogger";
+export * from "./addFrontmatterField";
+export * from "./promptUser";
+export * from "./setupSigintHandler";
+export * from "./detectEnvironments";
+export * from "./cleanupOrphanedTempDirs";

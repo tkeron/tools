@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.0] - 2026-05-18
+
+### Added
+
+Five new generic utilities:
+
+- **`addFrontmatterField(content, key, value)`**: Adds a key/value field to YAML frontmatter blocks. No-op when the field already exists or no frontmatter is present.
+- **`promptUser(question)`**: Async interactive yes/no stdin prompt returning a boolean (`y`/`yes` → true, anything else → false; case-insensitive, trims whitespace).
+- **`setupSigintHandler(stopCallback)`**: Registers a `SIGINT` handler that awaits an async cleanup callback before exiting with code 0.
+- **`detectEnvironments(cwd)`**: Detects AI tooling environments (`copilot`, `cursor`, `claude`) by checking for `.cursor/`, `.github/`, `.claude/` directories or `CLAUDE.md`. Returns `DetectedEnvironment[]`.
+- **`cleanupOrphanedTempDirs(parentDir, prefix, log)`**: Removes all subdirectories whose name starts with a given prefix. Useful for cleaning up interrupted build/test runs. Logs each removal through the injected `Logger`.
+
+Full test coverage (35+ new tests) and concurrent-safe.
+
 ## [0.4.0] - 2026-02-15
 
 ### Added

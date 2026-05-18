@@ -106,6 +106,67 @@ for (const num of rng(42, 10)) {
 }
 ```
 
+### Frontmatter Helpers
+
+Add a field to a YAML frontmatter block (no-op if the field already exists or no frontmatter is present):
+
+```typescript
+import { addFrontmatterField } from "@tkeron/tools";
+
+const content = "---\nname: example\n---\n\n# Body";
+const updated = addFrontmatterField(content, "alwaysApply", false);
+// "---\nname: example\nalwaysApply: false\n---\n\n# Body"
+```
+
+### Interactive Prompt
+
+Simple async yes/no stdin prompt:
+
+```typescript
+import { promptUser } from "@tkeron/tools";
+
+const confirmed = await promptUser("Continue? (y/N) ");
+if (confirmed) {
+  // ...
+}
+```
+
+### SIGINT Handler
+
+Register a graceful shutdown callback that runs before `process.exit(0)`:
+
+```typescript
+import { setupSigintHandler } from "@tkeron/tools";
+
+setupSigintHandler(async () => {
+  await server.stop();
+  await db.close();
+});
+```
+
+### Environment Detection
+
+Detect AI tooling environments in a project directory:
+
+```typescript
+import { detectEnvironments } from "@tkeron/tools";
+
+const envs = detectEnvironments(process.cwd());
+// [{ env: "copilot", target: ".github/skills" }, ...]
+```
+
+Checks for `.cursor/`, `.github/`, `.claude/`, and `CLAUDE.md`.
+
+### Orphaned Temp Dir Cleanup
+
+Remove all subdirectories whose name starts with a given prefix (useful for cleaning up after interrupted builds):
+
+```typescript
+import { cleanupOrphanedTempDirs, logger } from "@tkeron/tools";
+
+await cleanupOrphanedTempDirs(process.cwd(), ".mytool_tmp-", logger);
+```
+
 ## 📚 Documentation
 
 For detailed documentation and TypeScript definitions, refer to the source code. Each utility is fully typed with JSDoc comments for IDE support.
